@@ -1,6 +1,7 @@
 import { Search, MoreVertical } from "lucide-react";
 
-export default function TaskListHeader() {
+export default function TaskListHeader({searchItem}) {
+ 
   return (
     <header className="mb-6 flex items-center justify-between">
       <div className="flex items-center gap-2 text-xl font-semibold cursor-pointer">
@@ -22,6 +23,7 @@ export default function TaskListHeader() {
           <input
             type="text"
             placeholder="Search tasks..."
+            onChange={(e)=>searchItem(e)}
             className="bg-transparent text-gray-200 placeholder-gray-400 focus:outline-none"
           />
         </div>
