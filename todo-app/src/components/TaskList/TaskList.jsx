@@ -9,6 +9,22 @@ export default function TaskList() {
     { title: "Call mom", labelColor: "bg-blue-400", due: "Today", completed: false, priority: "Medium" },
   ]);
 
+
+   // Delete task 
+const deleteTask = (index) => {
+    const newTasks = tasks.filter((_, i) => i !== index);
+    setTasks(newTasks);
+  };
+  // Edit task (example: update the title)
+  const editTask = (index) => {
+    const newTitle = prompt("Enter new task title:", tasks[index].title);
+    if (newTitle !== null && newTitle.trim() !== "") {
+      const newTasks = [...tasks];
+      newTasks[index].title = newTitle;
+      setTasks(newTasks);
+    }
+  };
+  // Toggle completed
   const toggleTask = (index) => {
     const newTasks = [...tasks];
     newTasks[index].completed = !newTasks[index].completed;
@@ -20,7 +36,7 @@ export default function TaskList() {
       <TaskListHeader />
       <ul className="flex flex-col gap-3">
         {tasks.map((task, index) => (
-          <TaskItem key={index} task={task} index={index} toggleTask={toggleTask} />
+          <TaskItem key={index} task={task} index={index} toggleTask={toggleTask} onDelete={deleteTask} onEdit={editTask} />
         ))}
       </ul>
     </main>
