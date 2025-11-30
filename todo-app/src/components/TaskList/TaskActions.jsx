@@ -5,6 +5,22 @@ export default function TaskActions({ task, onEdit, onDelete }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
+  // --- Calculate overdue days ---
+  // Normalize both dates to midnight
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const dueDate = new Date(task.due);
+  dueDate.setHours(0, 0, 0, 0);
+
+  // Correct overdue check
+  const isOverdue = dueDate < today && !task.completed;
+
+  // Overdue days calculation
+  const daysOverdue = isOverdue
+    ? Math.ceil((today - dueDate) / (1000 * 60 * 60 * 24))
+    : 0;
+
   // Close menu on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -18,13 +34,24 @@ export default function TaskActions({ task, onEdit, onDelete }) {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex items-center gap-1 text-gray-200 text-sm">
-        <Calendar size={14} />
-        <span>{task.due}</span>
+      <div className="flex flex-col text-gray-200 text-sm leading-tight">
+        {/* Due Date */}
+        <div className="flex items-center gap-1">
+          <Calendar size={14} />
+          <span>{task.due}</span>
+        </div>
+
+        {/* Overdue text */}
+        {isOverdue && (
+          <span className="text-red-400 text-xs">
+            {daysOverdue} day{daysOverdue > 1 ? "s" : ""} overdue
+          </span>
+        )}
       </div>
+
       <span className={`w-4 h-4 rounded-full ${task.labelColor}`}></span>
 
-      {/* More Options Button */}
+      {/* More Options */}
       <div className="relative" ref={menuRef}>
         <button
           className="p-1 rounded hover:bg-gray-600"

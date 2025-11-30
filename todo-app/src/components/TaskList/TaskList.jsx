@@ -7,14 +7,14 @@ export default function TaskList() {
     {
       title: "Finish project report",
       labelColor: "bg-teal-400",
-      due: "Today",
+      due: "2025-11-30", // Today
       completed: true,
       priority: "High",
     },
     {
       title: "Finish project report",
       labelColor: "bg-teal-400",
-      due: "Today",
+      due: "2025-11-30", // Today
       completed: false,
       priority: "High",
       subtasks: [
@@ -26,14 +26,14 @@ export default function TaskList() {
     {
       title: "Buy groceries",
       labelColor: "bg-orange-400",
-      due: "Tomorrow",
+      due: "2025-11-27", // Tomorrow
       completed: false,
       priority: "Low",
     },
     {
       title: "Call mom",
       labelColor: "bg-blue-400",
-      due: "Today",
+      due: "2025-11-29", // Today
       completed: false,
       priority: "Medium",
     },
@@ -50,6 +50,15 @@ export default function TaskList() {
   const filteredWithIndex = tasks
     .map((task, originalIndex) => ({ task, originalIndex }))
     .filter(({ task }) => task.title.toLowerCase().includes(searchTerm || ""));
+  // function to check the task overdue
+  const isOverdue = (task) => {
+    if (!task.due) return false;
+
+    const today = new Date().setHours(0, 0, 0, 0);
+    const dueDate = new Date(task.due).setHours(0, 0, 0, 0);
+
+    return dueDate < today && !task.completed;
+  };
 
   // Immutable toggle of a main task's completed flag
   const toggleTask = (index) => {
@@ -146,6 +155,7 @@ export default function TaskList() {
             onDelete={deleteTask}
             onEdit={editTask}
             toggleSubtask={toggleSubtask}
+            isOverdue={isOverdue(task)}
           />
         ))}
       </ul>

@@ -11,16 +11,20 @@ export default function TaskItem({
   onEdit,
   onDelete,
   toggleSubtask,
+  isOverdue,
 }) {
   const [showSubtasks, setShowSubtasks] = useState(false);
 
   const completedStyle = task.completed
     ? "bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] border border-transparent"
     : "bg-gray-700 hover:bg-gray-600 border border-gray-700";
+  const overdueStyle = isOverdue
+    ? "border-red-500 bg-red-900/40" // highlight style
+    : "";
 
   return (
     <li
-      className={`flex flex-col gap-2 px-4 py-3 rounded-xl ${completedStyle} transition-colors`}
+      className={`flex flex-col gap-2 px-4 py-3 rounded-xl ${completedStyle} ${overdueStyle} transition-colors`}
     >
       {/* Top Row: Task Info & Actions */}
       <div className="flex items-center justify-between">
@@ -46,9 +50,9 @@ export default function TaskItem({
       {/* Subtasks List */}
       {showSubtasks && (
         <SubtaskList
-  subtasks={task.subtasks}
-  toggleSubtask={(subIndex) => toggleSubtask(index, subIndex)}
-/>
+          subtasks={task.subtasks}
+          toggleSubtask={(subIndex) => toggleSubtask(index, subIndex)}
+        />
       )}
     </li>
   );
