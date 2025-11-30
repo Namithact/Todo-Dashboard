@@ -96,6 +96,21 @@ export default function TaskList() {
   const deleteTask = (index) => {
     setTasks((prev) => prev.filter((_, i) => i !== index));
   };
+  //complete all tasks and subtasks
+  const toggleAllTasks = () => {
+    setTasks((prev) => {
+      const allDone = prev.every((t) => t.completed);
+      const newCompleted = !allDone;
+
+      return prev.map((t) => ({
+        ...t,
+        completed: newCompleted,
+        subtasks: t.subtasks
+          ? t.subtasks.map((s) => ({ ...s, completed: newCompleted }))
+          : [],
+      }));
+    });
+  };
 
   // Edit task title immutably
   const editTask = (index) => {
@@ -110,6 +125,16 @@ export default function TaskList() {
   return (
     <main className="flex-1 p-5 bg-gray-900 text-gray-200 overflow-y-auto">
       <TaskListHeader searchItem={searchTask} />
+      {/* Complete All Checkbox */}
+      <div className="flex items-center gap-2 mb-4 mt-2">
+        <input
+          type="checkbox"
+          checked={tasks.every((t) => t.completed)}
+          onChange={toggleAllTasks}
+          className="w-4 h-4 cursor-pointer"
+        />
+        <label className="text-gray-300">Complete All</label>
+      </div>
 
       <ul className="flex flex-col gap-3">
         {filteredWithIndex.map(({ task, originalIndex }) => (
