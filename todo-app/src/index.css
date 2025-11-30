@@ -1,1 +1,36 @@
 @import "tailwindcss";
+/* Dark Mode Scrollbar */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #444;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: #444;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+  border: 2px solid #444;
+}
+
+/* Light Mode Scrollbar */
+.scrollbar-light {
+  scrollbar-width: thin;
+  scrollbar-color: #999 #e5e5e5;
+}
+
+.scrollbar-light::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-light::-webkit-scrollbar-track {
+  background: #e5e5e5;
+}
+.scrollbar-light::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
+  border: 2px solid #e5e5e5;
+}

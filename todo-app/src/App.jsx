@@ -9,19 +9,13 @@ export default function App() {
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
 
-  // Refs to panels to detect outside clicks
   const sidebarRef = useRef(null);
   const newTaskRef = useRef(null);
 
   const handleOverlayClick = (e) => {
-    // Only close if click is outside panels
     if (
-      (sidebarOpen &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(e.target)) ||
-      (newTaskOpen &&
-        newTaskRef.current &&
-        !newTaskRef.current.contains(e.target))
+      (sidebarOpen && sidebarRef.current && !sidebarRef.current.contains(e.target)) ||
+      (newTaskOpen && newTaskRef.current && !newTaskRef.current.contains(e.target))
     ) {
       setSidebarOpen(false);
       setNewTaskOpen(false);
@@ -29,24 +23,33 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] flex items-center justify-center py-12 px-10 overflow-hidden relative">
+    <div
+      className={`h-screen w-full flex items-center justify-center py-12 px-4 sm:px-10 ${
+        lightMode
+          ? "bg-gray-100 text-black"
+          : "bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] text-gray-200"
+      } relative`}
+    >
       {/* Light Mode Toggle */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
-        <label className="text-white text-sm hidden sm:block">Light Mode</label>
-
+        <label className={`text-sm hidden sm:block ${lightMode ? "text-black" : "text-white"}`}>
+          Light Mode
+        </label>
         <button
           onClick={() => setLightMode(!lightMode)}
-          className="px-3 py-1 bg-gray-700 text-white rounded-md text-sm sm:text-base"
+          className={`px-3 py-1 rounded-md text-sm sm:text-base ${
+            lightMode ? "bg-gray-300 text-black" : "bg-gray-700 text-white"
+          }`}
         >
           {lightMode ? "On" : "Off"}
         </button>
       </div>
 
-      {/* Toggle Buttons for Mobile/Tablet */}
+      {/* Mobile/Tablet Toggles */}
       <div className="absolute top-4 left-4 z-50 flex gap-2 lg:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 bg-gray-700 rounded-md text-white"
+          className={`p-2 rounded-md ${lightMode ? "bg-gray-300 text-black" : "bg-gray-700 text-white"}`}
         >
           {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -58,42 +61,32 @@ export default function App() {
         </button>
       </div>
 
-      {/* Main Grid */}
-      <div
-        className={`
-          grid 
-          grid-cols-1      /* Mobile & Tablet: single column */
-          lg:grid-cols-[260px_1fr_360px] /* Desktop: 3-column */
-          h-[90%] w-full max-w-[1200px] 
-          bg-[#0f141b]/60 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl
-          relative
-          
-        `}
-      >
+      {/* Main Layout */}
+      <div className={`relative h-[90%] w-full max-w-[1200px] rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl
+        ${lightMode ? "bg-white/80" : "bg-[#0f141b]/60"} flex overflow-hidden
+      `}>
         {/* Sidebar */}
         <aside
           ref={sidebarRef}
-          className={`
-            absolute lg:relative top-0 left-0 h-full z-40 bg-gray-800 
-            w-64 transform transition-transform duration-300
-            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-            lg:translate-x-0
+          className={`absolute lg:relative top-0 left-0 h-full w-64 z-40 transform transition-transform duration-300 overflow-y-auto
+            ${lightMode ? "bg-white text-black border-r border-gray-300 scrollbar-light" : "bg-gray-800 text-gray-200 scrollbar"}
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
           `}
         >
           <Sidebar lightMode={lightMode} />
         </aside>
 
         {/* Task List */}
-        <TaskList className="order-1" lightMode={lightMode} />
+        <div className="flex-1 h-full overflow-y-auto">
+          <TaskList lightMode={lightMode} />
+        </div>
 
         {/* New Task Panel */}
         <aside
           ref={newTaskRef}
-          className={`
-            absolute lg:relative top-0 right-0 h-full z-30 bg-gray-800 
-            w-80 transform transition-transform duration-300
-            ${newTaskOpen ? "translate-x-0" : "translate-x-full"}
-            lg:translate-x-0
+          className={`absolute lg:relative top-0 right-0 h-full w-80 z-30 transform transition-transform duration-300 overflow-y-auto
+            ${lightMode ? "bg-white text-black border-l border-gray-300 scrollbar-light" : "bg-gray-800 text-gray-200 scrollbar"}
+            ${newTaskOpen ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
           `}
         >
           <NewTaskPanel lightMode={lightMode} />
@@ -102,8 +95,7 @@ export default function App() {
         {/* Overlay for mobile/tablet */}
         {(sidebarOpen || newTaskOpen) && (
           <div
-            className="absolute inset-0 z-20 lg:hidden"
-            style={{ background: "transparent" }} // no dim effect
+            className="absolute inset-0 z-20 lg:hidden bg-black/10"
             onClick={handleOverlayClick}
           />
         )}
