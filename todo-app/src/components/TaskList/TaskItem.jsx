@@ -12,28 +12,42 @@ export default function TaskItem({
   onDelete,
   toggleSubtask,
   isOverdue,
+  lightMode, // ✅ added prop
 }) {
   const [showSubtasks, setShowSubtasks] = useState(false);
 
+  // Main task styles
   const completedStyle = task.completed
-    ? "bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] border border-transparent"
+    ? lightMode
+      ? "bg-green-100 border border-green-300"
+      : "bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] border border-transparent"
+    : lightMode
+    ? "bg-gray-100 border border-gray-300 hover:bg-gray-200"
     : "bg-gray-700 hover:bg-gray-600 border border-gray-700";
+
   const overdueStyle = isOverdue
-    ? "border-red-500 bg-red-900/40" // highlight style
+    ? lightMode
+      ? "border-red-500 bg-red-200/40"
+      : "border-red-500 bg-red-900/40"
     : "";
+
+  // Text color for light mode
+  const textColor = lightMode ? "text-black" : "text-gray-200";
 
   return (
     <li
-      className={`flex flex-col gap-2 px-4 py-3 rounded-xl ${completedStyle} ${overdueStyle} transition-colors`}
+      className={`flex flex-col gap-2 px-4 py-3 rounded-xl transition-colors 
+                  ${completedStyle} ${overdueStyle} ${textColor}`}
     >
       {/* Top Row: Task Info & Actions */}
       <div className="flex items-center justify-between">
-        <TaskInfo task={task} toggleTask={() => toggleTask(index)} />
+        <TaskInfo task={task} toggleTask={() => toggleTask(index)} lightMode={lightMode} />
 
         <TaskActions
           task={task}
           onEdit={() => onEdit(index)}
           onDelete={() => onDelete(index)}
+          lightMode={lightMode}
         />
       </div>
 
@@ -41,7 +55,9 @@ export default function TaskItem({
       {task.subtasks && task.subtasks.length > 0 && (
         <button
           onClick={() => setShowSubtasks((prev) => !prev)}
-          className="text-sm text-blue-300 hover:text-blue-400 transition self-start"
+          className={`text-sm transition self-start ${
+            lightMode ? "text-blue-600 hover:text-blue-700" : "text-blue-300 hover:text-blue-400"
+          }`}
         >
           {showSubtasks ? "Hide Subtasks ▲" : "Show Subtasks ▼"}
         </button>
@@ -52,6 +68,7 @@ export default function TaskItem({
         <SubtaskList
           subtasks={task.subtasks}
           toggleSubtask={(subIndex) => toggleSubtask(index, subIndex)}
+          lightMode={lightMode}
         />
       )}
     </li>

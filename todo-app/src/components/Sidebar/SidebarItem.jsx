@@ -1,4 +1,4 @@
-export default function SidebarItem({ label, Icon }) {
+export default function SidebarItem({ lightMode, label, Icon }) {
   return (
     <div
       className="flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer
@@ -7,11 +7,25 @@ export default function SidebarItem({ label, Icon }) {
       tabIndex={0}
       aria-label={label}
     >
-      <div className="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center 
-                      text-gray-400 group-hover:text-white">
+      <div
+        className={`w-5 h-5 rounded-md bg-white/10 flex items-center justify-center 
+                      ${
+                        lightMode
+                          ? "text-black group-hover:text-gray-400"
+                          : "text-gray-400 group-hover:text-white"
+                      }`}
+      >
         {Icon && <Icon size={16} aria-hidden="true" />}
       </div>
-      <span className="text-gray-200 group-hover:text-white">{label}</span>
+      <span
+        className={`${
+          lightMode
+            ? "text-black group-hover:text-gray-400"
+            : "text-gray-200 group-hover:text-white"
+        }`}
+      >
+        {label}
+      </span>
     </div>
   );
 }

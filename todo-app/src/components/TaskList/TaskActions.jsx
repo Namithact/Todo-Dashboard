@@ -1,22 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreVertical, Calendar } from "lucide-react";
 
-export default function TaskActions({ task, onEdit, onDelete }) {
+export default function TaskActions({ task, onEdit, onDelete, lightMode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
   // --- Calculate overdue days ---
-  // Normalize both dates to midnight
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const dueDate = new Date(task.due);
   dueDate.setHours(0, 0, 0, 0);
 
-  // Correct overdue check
   const isOverdue = dueDate < today && !task.completed;
 
-  // Overdue days calculation
   const daysOverdue = isOverdue
     ? Math.ceil((today - dueDate) / (1000 * 60 * 60 * 24))
     : 0;
@@ -32,9 +29,16 @@ export default function TaskActions({ task, onEdit, onDelete }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Colors based on light/dark mode
+  const textColor = lightMode ? "text-black" : "text-gray-200";
+  const overdueColor = "text-red-600";
+  const badgeBorder = lightMode ? "border-gray-300" : "border-gray-600";
+  const badgeBg = lightMode ? "bg-gray-100" : "bg-gray-800";
+  const buttonHoverBg = lightMode ? "hover:bg-gray-200" : "hover:bg-gray-600";
+
   return (
     <div className="flex items-center gap-3">
-      <div className="flex flex-col text-gray-200 text-sm leading-tight">
+      <div className={`flex flex-col text-sm leading-tight ${textColor}`}>
         {/* Due Date */}
         <div className="flex items-center gap-1">
           <Calendar size={14} />
@@ -43,27 +47,31 @@ export default function TaskActions({ task, onEdit, onDelete }) {
 
         {/* Overdue text */}
         {isOverdue && (
-          <span className="text-red-400 text-xs">
+          <span className={`${overdueColor} text-xs`}>
             {daysOverdue} day{daysOverdue > 1 ? "s" : ""} overdue
           </span>
         )}
       </div>
 
-      <span className={`w-4 h-4 rounded-full ${task.labelColor}`}></span>
+      <span
+        className={`w-4 h-4 rounded-full ${task.labelColor} border ${badgeBorder} ${badgeBg}`}
+      ></span>
 
       {/* More Options */}
       <div className="relative" ref={menuRef}>
         <button
-          className="p-1 rounded hover:bg-gray-600"
+          className={`p-1 rounded ${buttonHoverBg}`}
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <MoreVertical size={16} className="text-gray-200" />
+          <MoreVertical size={16} className={textColor} />
         </button>
 
         {menuOpen && (
-          <ul className="absolute right-0 top-8 w-32 bg-gray-800 border border-gray-600 rounded-md shadow-lg text-gray-200 py-1 z-50">
+          <ul
+            className={`absolute right-0 top-8 w-32 ${badgeBg} border ${badgeBorder} rounded-md shadow-lg py-1 z-50 ${textColor}`}
+          >
             <li
-              className="px-3 py-2 hover:bg-gray-700 cursor-pointer"
+              className={`px-3 py-2 cursor-pointer ${buttonHoverBg}`}
               onClick={() => {
                 onEdit();
                 setMenuOpen(false);
@@ -72,7 +80,7 @@ export default function TaskActions({ task, onEdit, onDelete }) {
               Edit Item
             </li>
             <li
-              className="px-3 py-2 hover:bg-gray-700 cursor-pointer"
+              className={`px-3 py-2 cursor-pointer ${buttonHoverBg}`}
               onClick={() => {
                 onDelete();
                 setMenuOpen(false);

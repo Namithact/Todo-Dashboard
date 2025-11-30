@@ -1,17 +1,67 @@
-export default function Notes() {
+export default function Notes({ lightMode }) {
   return (
     <section>
-      <h2 className="text-gray-400 text-sm font-medium mb-2">Note</h2>
+      <h2
+        className={`gap-3 ${
+          lightMode ? "text-black" : "text-gray-300 "
+        } text-sm font-medium mb-2`}
+      >
+        Note
+      </h2>
 
-      <div className="bg-[#1a1d22] rounded-xl border border-gray-700 p-3 flex flex-col gap-3 relative">
+      <div
+        className={` ${
+          lightMode ? "bg-white" : "bg-[#1a1d22]"
+        } rounded-xl border border-gray-700 p-3 flex flex-col gap-3 relative`}
+      >
         {/* Formatting toolbar */}
-        <div className="flex items-center gap-4 text-gray-400">
-          <button className="hover:text-gray-200 transition">B</button>
-          <button className="hover:text-gray-200 transition">I</button>
-          <button className="hover:text-gray-200 transition">U</button>
-          <button className="hover:text-gray-200 transition">/</button>
-          <button className="hover:text-gray-200 transition">●</button>
-          <button className="hover:text-gray-200 transition">1.</button>
+        <div
+          className={`flex items-center gap-4 ${
+            lightMode ? "text-black" : "text-gray-400"
+          } `}
+        >
+          <button
+            className={`${
+              lightMode ? "hover:text-gray-400" : "hover:text-gray-200"
+            } transition`}
+          >
+            B
+          </button>
+          <button
+            className={`${
+              lightMode ? "hover:text-gray-400" : "hover:text-gray-200"
+            } transition`}
+          >
+            I
+          </button>
+          <button
+            className={`${
+              lightMode ? "hover:text-gray-400" : "hover:text-gray-200"
+            } transition`}
+          >
+            U
+          </button>
+          <button
+            className={`${
+              lightMode ? "hover:text-gray-400" : "hover:text-gray-200"
+            } transition`}
+          >
+            /
+          </button>
+          <button
+            className={`${
+              lightMode ? "hover:text-gray-400" : "hover:text-gray-200"
+            } transition`}
+          >
+            ●
+          </button>
+          <button
+            className={`${
+              lightMode ? "hover:text-gray-400" : "hover:text-gray-200"
+            } transition`}
+          >
+            1.
+          </button>
         </div>
 
         {/* Textarea */}

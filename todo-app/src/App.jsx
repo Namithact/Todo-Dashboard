@@ -7,6 +7,7 @@ import { Menu, Plus, X } from "lucide-react";
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
+  const [lightMode, setLightMode] = useState(false);
 
   // Refs to panels to detect outside clicks
   const sidebarRef = useRef(null);
@@ -15,8 +16,12 @@ export default function App() {
   const handleOverlayClick = (e) => {
     // Only close if click is outside panels
     if (
-      (sidebarOpen && sidebarRef.current && !sidebarRef.current.contains(e.target)) ||
-      (newTaskOpen && newTaskRef.current && !newTaskRef.current.contains(e.target))
+      (sidebarOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(e.target)) ||
+      (newTaskOpen &&
+        newTaskRef.current &&
+        !newTaskRef.current.contains(e.target))
     ) {
       setSidebarOpen(false);
       setNewTaskOpen(false);
@@ -24,8 +29,19 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] flex items-center justify-center p-6 overflow-hidden relative">
-      
+    <div className="h-screen w-full bg-gradient-to-br from-[#0f383d] via-[#0f1d2b] to-[#0b0f14] flex items-center justify-center py-12 px-10 overflow-hidden relative">
+      {/* Light Mode Toggle */}
+      <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+        <label className="text-white text-sm hidden sm:block">Light Mode</label>
+
+        <button
+          onClick={() => setLightMode(!lightMode)}
+          className="px-3 py-1 bg-gray-700 text-white rounded-md text-sm sm:text-base"
+        >
+          {lightMode ? "On" : "Off"}
+        </button>
+      </div>
+
       {/* Toggle Buttons for Mobile/Tablet */}
       <div className="absolute top-4 left-4 z-50 flex gap-2 lg:hidden">
         <button
@@ -48,9 +64,10 @@ export default function App() {
           grid 
           grid-cols-1      /* Mobile & Tablet: single column */
           lg:grid-cols-[260px_1fr_360px] /* Desktop: 3-column */
-          h-full w-full max-w-[1600px] 
+          h-[90%] w-full max-w-[1200px] 
           bg-[#0f141b]/60 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl
           relative
+          
         `}
       >
         {/* Sidebar */}
@@ -63,11 +80,11 @@ export default function App() {
             lg:translate-x-0
           `}
         >
-          <Sidebar />
+          <Sidebar lightMode={lightMode} />
         </aside>
 
         {/* Task List */}
-        <TaskList className="order-1" />
+        <TaskList className="order-1" lightMode={lightMode} />
 
         {/* New Task Panel */}
         <aside
@@ -79,7 +96,7 @@ export default function App() {
             lg:translate-x-0
           `}
         >
-          <NewTaskPanel />
+          <NewTaskPanel lightMode={lightMode} />
         </aside>
 
         {/* Overlay for mobile/tablet */}

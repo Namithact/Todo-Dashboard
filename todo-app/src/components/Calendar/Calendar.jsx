@@ -1,6 +1,6 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-export default function CalendarPanel() {
+export default function CalendarPanel({ lightMode }) {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
 
   const monthStart = currentMonth.startOf("month");
@@ -26,17 +26,25 @@ export default function CalendarPanel() {
   const isCurrentMonth = (date) => date.isSame(currentMonth, "month");
 
   return (
-    <div className="bg-[#1a1d22] rounded-xl ">
+    <div className={`${lightMode ? "bg-white " : "bg-[#1a1d22] "} rounded-xl `}>
       {/* Header Month */}
       <div className="flex justify-between items-center mb-3">
         <button
           onClick={() => setCurrentMonth(currentMonth.subtract(1, "month"))}
-          className="text-gray-400 hover:text-gray-200"
+          className={`${
+            lightMode
+              ? "text-black hover:text-gray-400 "
+              : "text-gray-400 hover:text-gray-200 "
+          }`}
         >
           ‹
         </button>
 
-        <h3 className="text-gray-200 font-medium">
+        <h3
+          className={`${
+            lightMode ? " text-black" : " text-gray-200"
+          } font-medium`}
+        >
           {currentMonth.format("MMMM YYYY")}
         </h3>
 

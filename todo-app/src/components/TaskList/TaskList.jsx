@@ -2,7 +2,7 @@ import TaskListHeader from "./TaskListHeader";
 import TaskItem from "./TaskItem";
 import { useState } from "react";
 
-export default function TaskList() {
+export default function TaskList({lightMode}) {
   const [tasks, setTasks] = useState([
     {
       title: "Finish project report",
@@ -131,34 +131,47 @@ export default function TaskList() {
     }
   };
 
-  return (
-    <main className="flex-1 p-5 bg-gray-900 text-gray-200 overflow-y-auto">
-      <TaskListHeader searchItem={searchTask} />
-      {/* Complete All Checkbox */}
-      <div className="flex items-center gap-2 mb-4 mt-2">
-        <input
-          type="checkbox"
-          checked={tasks.every((t) => t.completed)}
-          onChange={toggleAllTasks}
-          className="w-4 h-4 cursor-pointer"
-        />
-        <label className="text-gray-300">Complete All</label>
-      </div>
+ return (
+  <main
+    className={`
+      flex-1 p-5 overflow-y-auto transition-all duration-300
+      ${lightMode ? "bg-gray-100 text-gray-800" : "bg-gray-900 text-gray-200"}
+    `}
+  >
+    <TaskListHeader searchItem={searchTask} lightMode={lightMode}/>
 
-      <ul className="flex flex-col gap-3">
-        {filteredWithIndex.map(({ task, originalIndex }) => (
-          <TaskItem
-            key={originalIndex} // ok for this ; better to use unique id in production//change this later
-            task={task}
-            index={originalIndex} // <- pass the real index
-            toggleTask={toggleTask}
-            onDelete={deleteTask}
-            onEdit={editTask}
-            toggleSubtask={toggleSubtask}
-            isOverdue={isOverdue(task)}
-          />
-        ))}
-      </ul>
-    </main>
-  );
+    {/* Complete All Checkbox */}
+    <div className="flex items-center gap-2 mb-4 mt-2">
+      <input
+        type="checkbox"
+        checked={tasks.every((t) => t.completed)}
+        onChange={toggleAllTasks}
+        className={`
+          w-4 h-4 cursor-pointer rounded
+          ${lightMode ? "accent-blue-600" : "accent-teal-400"}
+        `}
+      />
+      <label className={lightMode ? "text-gray-700" : "text-gray-300"}>
+        Complete All
+      </label>
+    </div>
+
+    <ul className="flex flex-col gap-3">
+      {filteredWithIndex.map(({ task, originalIndex }) => (
+        <TaskItem
+          key={originalIndex}
+          task={task}
+          index={originalIndex}
+          toggleTask={toggleTask}
+          onDelete={deleteTask}
+          onEdit={editTask}
+          toggleSubtask={toggleSubtask}
+          isOverdue={isOverdue(task)}
+          lightMode={lightMode} 
+        />
+      ))}
+    </ul>
+  </main>
+);
+
 }

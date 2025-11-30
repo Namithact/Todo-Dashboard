@@ -1,4 +1,4 @@
-export default function LabelItem({ label, color, icon }) {
+export default function LabelItem({ lightMode, label, color, icon }) {
   return (
     <div
       className="flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer
@@ -12,9 +12,14 @@ export default function LabelItem({ label, color, icon }) {
           {icon}
         </div>
       ) : (
-        <span className={`w-3 h-3 rounded-full ${color}`} aria-hidden="true"></span>
+        <span
+          className={`w-3 h-3 rounded-full ${color}`}
+          aria-hidden="true"
+        ></span>
       )}
-      <span className="text-gray-200">{label}</span>
+      <span className={` ${lightMode ? "text-black" : "text-gray-200"}`}>
+        {label}
+      </span>
     </div>
   );
 }
