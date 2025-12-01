@@ -7,9 +7,14 @@ import { Menu, Plus, X } from "lucide-react";
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
-  const [lightMode, setLightMode] = useState(false);
+
+  // Initialize lightMode from sessionStorage
+  const [lightMode, setLightMode] = useState(() => {
+    const saved = sessionStorage.getItem("lightMode");
+    return saved === "true"; // stored as string, convert to boolean
+  });
+
   const [tasks, setTasks] = useState(() => {
-    // Load tasks from localStorage on initial render
     const saved = localStorage.getItem("tasks");
     return saved ? JSON.parse(saved) : [];
   });
@@ -21,6 +26,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+  // Save lightMode to sessionStorage whenever it changes
+  useEffect(() => {
+    sessionStorage.setItem("lightMode", lightMode);
+  }, [lightMode]);
 
   const addTask = (task) => {
     const formatted = {
@@ -98,8 +108,7 @@ export default function App() {
       {/* Main Layout */}
       <div
         className={`relative h-[90%] w-full max-w-[1200px] rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl
-        ${lightMode ? "bg-white/80" : "bg-[#0f141b]/60"} flex overflow-hidden
-      `}
+        ${lightMode ? "bg-white/80" : "bg-[#0f141b]/60"} flex overflow-hidden`}
       >
         {/* Sidebar */}
         <aside
