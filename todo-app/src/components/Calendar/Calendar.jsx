@@ -28,21 +28,21 @@ export default function CalendarPanel({ lightMode, selectedDate, onSelect }) {
   const isCurrentMonth = (date) => date.isSame(currentMonth, "month");
 
   return (
-    <div className={`${lightMode ? "bg-white" : "bg-[#1a1d22]"} rounded-xl`}>
+    <div >
       {/* Month Header */}
       <div className="flex justify-between items-center mb-3">
         <button
           onClick={() => setCurrentMonth(currentMonth.subtract(1, "month"))}
-          className={`${lightMode ? "text-black hover:text-gray-400" : "text-gray-400 hover:text-gray-200"}`}
+          className={`${lightMode ? "text-gray-700 hover:text-gray-900" : "text-gray-400 hover:text-gray-200"} font-semibold`}
         >
           ‹
         </button>
-        <h3 className={`${lightMode ? "text-black" : "text-gray-200"} font-medium`}>
+        <h3 className={`${lightMode ? "text-gray-800" : "text-gray-200"} font-semibold`}>
           {currentMonth.format("MMMM YYYY")}
         </h3>
         <button
           onClick={() => setCurrentMonth(currentMonth.add(1, "month"))}
-          className="text-gray-400 hover:text-gray-200"
+          className={`${lightMode ? "text-gray-700 hover:text-gray-900" : "text-gray-400 hover:text-gray-200"} font-semibold`}
         >
           ›
         </button>
@@ -51,24 +51,29 @@ export default function CalendarPanel({ lightMode, selectedDate, onSelect }) {
       {/* Calendar Table */}
       <table className="w-full text-center text-sm">
         <thead>
-          <tr className="text-gray-500">
+          <tr className={`${lightMode ? "text-gray-600" : "text-gray-500"}`}>
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
               <th key={day} className="pb-2 font-medium">{day}</th>
             ))}
           </tr>
         </thead>
-        <tbody className="text-gray-400">
+        <tbody>
           {rows.map((week, i) => (
             <tr key={i}>
               {week.map((date) => (
                 <td key={date.format("DD-MM-YYYY")} className="py-1">
                   <div
                     onClick={() => onSelect(date.format("YYYY-MM-DD"))}
-                    className={`w-8 h-8 mx-auto flex items-center justify-center rounded-full cursor-pointer
-                      ${isToday(date) ? "bg-teal-500/10 text-teal-400 font-semibold border border-teal-600" : ""}
-                      ${isSelected(date) ? "bg-teal-600 text-white font-semibold" : ""}
-                      ${!isCurrentMonth(date) ? "text-gray-600" : ""}
-                      ${isCurrentMonth(date) && !isSelected(date) && !isToday(date) ? "text-gray-300" : ""}
+                    className={`
+                      w-8 h-8 mx-auto flex items-center justify-center rounded-full cursor-pointer transition
+                      ${isToday(date) && lightMode ? "bg-teal-100 text-teal-600 font-semibold border border-teal-400" : ""}
+                      ${isToday(date) && !lightMode ? "bg-teal-500/10 text-teal-400 font-semibold border border-teal-600" : ""}
+                      ${isSelected(date) && lightMode ? "bg-teal-500 text-white font-semibold" : ""}
+                      ${isSelected(date) && !lightMode ? "bg-teal-600 text-white font-semibold" : ""}
+                      ${!isCurrentMonth(date) && lightMode ? "text-gray-400" : ""}
+                      ${!isCurrentMonth(date) && !lightMode ? "text-gray-600" : ""}
+                      ${isCurrentMonth(date) && !isSelected(date) && !isToday(date) && lightMode ? "text-gray-700 hover:bg-gray-100" : ""}
+                      ${isCurrentMonth(date) && !isSelected(date) && !isToday(date) && !lightMode ? "text-gray-300 hover:bg-gray-700/50" : ""}
                     `}
                   >
                     {date.format("D")}
