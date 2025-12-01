@@ -2,7 +2,7 @@ import TaskListHeader from "./TaskListHeader";
 import TaskItem from "./TaskItem";
 import { useState } from "react";
 
-export default function TaskList({lightMode}) {
+export default function TaskList({ lightMode }) {
   const [tasks, setTasks] = useState([
     {
       title: "Finish project report",
@@ -10,6 +10,19 @@ export default function TaskList({lightMode}) {
       due: "2025-11-30", // Today
       completed: true,
       priority: "High",
+    },
+    {
+      title: "tt",
+      labelColor: "bg-blue-400",
+      due: "2025-12-11",
+      completed: false,
+      priority: "Medium",
+      subtasks: [
+        {
+          title: "test",
+          completed: false,
+        },
+      ],
     },
     {
       title: "Finish project report",
@@ -131,47 +144,46 @@ export default function TaskList({lightMode}) {
     }
   };
 
- return (
-  <main
-    className={`
+  return (
+    <main
+      className={`
       flex-1 p-5 overflow-y-auto transition-all duration-300
       ${lightMode ? "bg-gray-100 text-gray-800" : "bg-gray-900 text-gray-200"}
     `}
-  >
-    <TaskListHeader searchItem={searchTask} lightMode={lightMode}/>
+    >
+      <TaskListHeader searchItem={searchTask} lightMode={lightMode} />
 
-    {/* Complete All Checkbox */}
-    <div className="flex items-center gap-2 mb-4 mt-2">
-      <input
-        type="checkbox"
-        checked={tasks.every((t) => t.completed)}
-        onChange={toggleAllTasks}
-        className={`
+      {/* Complete All Checkbox */}
+      <div className="flex items-center gap-2 mb-4 mt-2">
+        <input
+          type="checkbox"
+          checked={tasks.every((t) => t.completed)}
+          onChange={toggleAllTasks}
+          className={`
           w-4 h-4 cursor-pointer rounded
           ${lightMode ? "accent-blue-600" : "accent-teal-400"}
         `}
-      />
-      <label className={lightMode ? "text-gray-700" : "text-gray-300"}>
-        Complete All
-      </label>
-    </div>
-
-    <ul className="flex flex-col gap-3">
-      {filteredWithIndex.map(({ task, originalIndex }) => (
-        <TaskItem
-          key={originalIndex}
-          task={task}
-          index={originalIndex}
-          toggleTask={toggleTask}
-          onDelete={deleteTask}
-          onEdit={editTask}
-          toggleSubtask={toggleSubtask}
-          isOverdue={isOverdue(task)}
-          lightMode={lightMode} 
         />
-      ))}
-    </ul>
-  </main>
-);
+        <label className={lightMode ? "text-gray-700" : "text-gray-300"}>
+          Complete All
+        </label>
+      </div>
 
+      <ul className="flex flex-col gap-3">
+        {filteredWithIndex.map(({ task, originalIndex }) => (
+          <TaskItem
+            key={originalIndex}
+            task={task}
+            index={originalIndex}
+            toggleTask={toggleTask}
+            onDelete={deleteTask}
+            onEdit={editTask}
+            toggleSubtask={toggleSubtask}
+            isOverdue={isOverdue(task)}
+            lightMode={lightMode}
+          />
+        ))}
+      </ul>
+    </main>
+  );
 }

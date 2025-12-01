@@ -1,6 +1,7 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-export default function CalendarPanel({ lightMode }) {
+
+export default function CalendarPanel({ lightMode, selectedDate, onSelect }) {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
 
   const monthStart = currentMonth.startOf("month");
@@ -23,31 +24,22 @@ export default function CalendarPanel({ lightMode }) {
   }
 
   const isToday = (date) => date.isSame(dayjs(), "day");
+  const isSelected = (date) => selectedDate && date.isSame(selectedDate, "day");
   const isCurrentMonth = (date) => date.isSame(currentMonth, "month");
 
   return (
-    <div className={`${lightMode ? "bg-white " : "bg-[#1a1d22] "} rounded-xl `}>
-      {/* Header Month */}
+    <div className={`${lightMode ? "bg-white" : "bg-[#1a1d22]"} rounded-xl`}>
+      {/* Month Header */}
       <div className="flex justify-between items-center mb-3">
         <button
           onClick={() => setCurrentMonth(currentMonth.subtract(1, "month"))}
-          className={`${
-            lightMode
-              ? "text-black hover:text-gray-400 "
-              : "text-gray-400 hover:text-gray-200 "
-          }`}
+          className={`${lightMode ? "text-black hover:text-gray-400" : "text-gray-400 hover:text-gray-200"}`}
         >
           ‹
         </button>
-
-        <h3
-          className={`${
-            lightMode ? " text-black" : " text-gray-200"
-          } font-medium`}
-        >
+        <h3 className={`${lightMode ? "text-black" : "text-gray-200"} font-medium`}>
           {currentMonth.format("MMMM YYYY")}
         </h3>
-
         <button
           onClick={() => setCurrentMonth(currentMonth.add(1, "month"))}
           className="text-gray-400 hover:text-gray-200"
@@ -56,32 +48,28 @@ export default function CalendarPanel({ lightMode }) {
         </button>
       </div>
 
-      {/* Calendar */}
+      {/* Calendar Table */}
       <table className="w-full text-center text-sm">
         <thead>
           <tr className="text-gray-500">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <th key={day} className="pb-2 font-medium">
-                {day}
-              </th>
+              <th key={day} className="pb-2 font-medium">{day}</th>
             ))}
           </tr>
         </thead>
-
         <tbody className="text-gray-400">
           {rows.map((week, i) => (
             <tr key={i}>
               {week.map((date) => (
                 <td key={date.format("DD-MM-YYYY")} className="py-1">
                   <div
-                    className={`w-8 h-8 mx-auto flex items-center justify-center rounded-full
-                    ${
-                      isToday(date)
-                        ? "bg-teal-500/10 text-teal-400 font-semibold border border-teal-600"
-                        : isCurrentMonth(date)
-                        ? "text-gray-300"
-                        : "text-gray-600"
-                    }`}
+                    onClick={() => onSelect(date.format("YYYY-MM-DD"))}
+                    className={`w-8 h-8 mx-auto flex items-center justify-center rounded-full cursor-pointer
+                      ${isToday(date) ? "bg-teal-500/10 text-teal-400 font-semibold border border-teal-600" : ""}
+                      ${isSelected(date) ? "bg-teal-600 text-white font-semibold" : ""}
+                      ${!isCurrentMonth(date) ? "text-gray-600" : ""}
+                      ${isCurrentMonth(date) && !isSelected(date) && !isToday(date) ? "text-gray-300" : ""}
+                    `}
                   >
                     {date.format("D")}
                   </div>
