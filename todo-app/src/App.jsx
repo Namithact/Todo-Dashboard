@@ -8,14 +8,31 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
-
+  const [tasks, setTasks] = useState([]);
   const sidebarRef = useRef(null);
   const newTaskRef = useRef(null);
+  const addTask = (task) => {
+    const formatted = {
+      title: task.title,
+      labelColor: task.labelColor,
+      due: task.due,
+      completed: false,
+      priority: task.priority,
+      subtasks: task.subtasks,
+    };
+
+    setTasks((prev) => [...prev, formatted]);
+    console.log("Task added:", formatted);
+  };
 
   const handleOverlayClick = (e) => {
     if (
-      (sidebarOpen && sidebarRef.current && !sidebarRef.current.contains(e.target)) ||
-      (newTaskOpen && newTaskRef.current && !newTaskRef.current.contains(e.target))
+      (sidebarOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(e.target)) ||
+      (newTaskOpen &&
+        newTaskRef.current &&
+        !newTaskRef.current.contains(e.target))
     ) {
       setSidebarOpen(false);
       setNewTaskOpen(false);
@@ -32,7 +49,11 @@ export default function App() {
     >
       {/* Light Mode Toggle */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
-        <label className={`text-sm hidden sm:block ${lightMode ? "text-black" : "text-white"}`}>
+        <label
+          className={`text-sm hidden sm:block ${
+            lightMode ? "text-black" : "text-white"
+          }`}
+        >
           Light Mode
         </label>
         <button
@@ -49,7 +70,9 @@ export default function App() {
       <div className="absolute top-4 left-4 z-50 flex gap-2 lg:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className={`p-2 rounded-md ${lightMode ? "bg-gray-300 text-black" : "bg-gray-700 text-white"}`}
+          className={`p-2 rounded-md ${
+            lightMode ? "bg-gray-300 text-black" : "bg-gray-700 text-white"
+          }`}
         >
           {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -62,15 +85,23 @@ export default function App() {
       </div>
 
       {/* Main Layout */}
-      <div className={`relative h-[90%] w-full max-w-[1200px] rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl
+      <div
+        className={`relative h-[90%] w-full max-w-[1200px] rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl
         ${lightMode ? "bg-white/80" : "bg-[#0f141b]/60"} flex overflow-hidden
-      `}>
+      `}
+      >
         {/* Sidebar */}
         <aside
           ref={sidebarRef}
           className={`absolute lg:relative top-0 left-0 h-full w-64 z-40 transform transition-transform duration-300 overflow-y-auto
-            ${lightMode ? "bg-white text-black border-r border-gray-300 scrollbar-light" : "bg-gray-800 text-gray-200 scrollbar"}
-            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
+            ${
+              lightMode
+                ? "bg-white text-black border-r border-gray-300 scrollbar-light"
+                : "bg-gray-800 text-gray-200 scrollbar"
+            }
+            ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } lg:translate-x-0
           `}
         >
           <Sidebar lightMode={lightMode} />
@@ -85,11 +116,17 @@ export default function App() {
         <aside
           ref={newTaskRef}
           className={`absolute lg:relative top-0 right-0 h-full w-80 z-30 transform transition-transform duration-300 overflow-y-auto
-            ${lightMode ? "bg-white text-black border-l border-gray-300 scrollbar-light" : "bg-gray-800 text-gray-200 scrollbar"}
-            ${newTaskOpen ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
+            ${
+              lightMode
+                ? "bg-white text-black border-l border-gray-300 scrollbar-light"
+                : "bg-gray-800 text-gray-200 scrollbar"
+            }
+            ${
+              newTaskOpen ? "translate-x-0" : "translate-x-full"
+            } lg:translate-x-0
           `}
         >
-          <NewTaskPanel lightMode={lightMode} />
+          <NewTaskPanel lightMode={lightMode} addTask={addTask} />
         </aside>
 
         {/* Overlay for mobile/tablet */}

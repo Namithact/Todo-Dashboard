@@ -1,22 +1,61 @@
+import { useState } from "react";
 import TaskInput from "./TaskInput";
 import ActionButtons from "./ActionButtons";
 import Subtasks from "./Subtasks";
 import Notes from "./Notes";
 import DueDate from "./DueDate";
 
-export default function NewTaskPanel({ lightMode }) {
+export default function NewTaskPanel({ lightMode, addTask }) {
+  const initialTaskState = {
+    title: "",
+    labelColor: "",
+    priority: "",
+    due: "",
+    subtasks: [],
+    completed: false,
+  };
+
+  const [task, setTask] = useState(initialTaskState);
+
+  const handleAddTask = () => {
+    if (!task.title.trim()) return; // prevent empty task
+    addTask(task); // send task to parent
+    setTask(initialTaskState); // reset task input & subtasks
+  };
+
   return (
     <aside
-      className={`w-80 h-full flex-shrink-0 ${lightMode ? "bg-white text-black" : "bg-gray-800 text-gray-200"} 
-        border-l border-gray-800 p-5 flex flex-col gap-6 overflow-y-auto`}
-      aria-label="New Task Panel"
+      className={`w-80 h-full flex-shrink-0 ${
+        lightMode ? "bg-white text-black" : "bg-gray-800 text-gray-200"
+      } border-l border-gray-800 p-5 flex flex-col gap-6 overflow-y-auto`}
     >
-      <TaskInput lightMode={lightMode} />
-      <ActionButtons lightMode={lightMode} />
-      <Subtasks lightMode={lightMode} />
+      {/* Task Title Input */}
+      <TaskInput
+        lightMode={lightMode}
+        value={task.title}
+        onChange={(value) => setTask((prev) => ({ ...prev, title: value }))}
+      />
+
+      {/* Action Buttons */}
+      <ActionButtons
+        task={task}
+        setTask={setTask}
+        onAddTask={handleAddTask} // use wrapper function to reset state
+      />
+      {/* Due Date */}
+      <DueDate
+        lightMode={lightMode}
+        onSelect={(date) => setTask((prev) => ({ ...prev, due: date }))}
+      />
+      {/* Subtasks */}
+      <Subtasks
+        lightMode={lightMode}
+        subtasks={task.subtasks}
+        setSubtasks={(list) => setTask((prev) => ({ ...prev, subtasks: list }))}
+      />
+
+      {/* Notes */}
       <Notes lightMode={lightMode} />
-      <DueDate lightMode={lightMode} />
     </aside>
   );
 }
-

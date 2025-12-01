@@ -1,22 +1,90 @@
-import { Plus, Edit3, Link } from "lucide-react";
+import { useState } from "react";
+import { ListPlus } from "lucide-react";
+import LabelDropdown from "./LabelDropdown";
+import PriorityDropdown from "./PriorityDropdown";
 
-export default function ActionButtons() {
+export default function ActionButtons({ task, setTask, onAddTask }) {
+  const [showSubtaskInput, setShowSubtaskInput] = useState(false);
+  const [subtaskText, setSubtaskText] = useState("");
+
+  const handleAddSubtask = () => {
+    if (!subtaskText.trim()) return;
+
+    setTask((prev) => ({
+      ...prev,
+      subtasks: [...prev.subtasks, { title: subtaskText, completed: false }],
+    }));
+
+    setSubtaskText("");
+    setShowSubtaskInput(false);
+  };
+
   return (
-    <section className="flex items-center gap-3">
-      <button className="px-4 py-2 rounded-xl bg-teal-600 text-gray-900 font-semibold hover:bg-teal-500 transition">
-        + Sea
-      </button>
+    <section className="w-full flex flex-col gap-4">
+     
 
-      <button className="p-2 rounded-xl bg-[#1d2127] border border-gray-700 hover:bg-gray-700 transition">
-        <Edit3 size={16} className="text-gray-300" />
-      </button>
+      {/* LABEL - PRIORITY - SUBTASK ROW */}
+      <div className="flex gap-2">
+        <div className="flex-1 min-w-0">
+          <LabelDropdown
+            onSelect={(label) =>
+              setTask((prev) => ({ ...prev, labelColor: label.color }))
+            }
+          />
+        </div>
 
-      <button className="p-2 rounded-xl bg-[#1d2127] border border-gray-700 hover:bg-gray-700 transition">
-        <Link size={16} className="text-gray-300" />
-      </button>
+        <div className="flex-1 min-w-0">
+          <PriorityDropdown
+            onSelect={(priority) => setTask((prev) => ({ ...prev, priority }))}
+          />
+        </div>
 
-      <button className="p-2 rounded-xl bg-[#1d2127] border border-gray-700 hover:bg-gray-700 transition">
-        <Plus size={16} className="text-gray-300" />
+        <button
+          onClick={() => setShowSubtaskInput(true)}
+          className="flex-1 min-w-0 flex items-center justify-center gap-2 px-2 py-2 
+                     rounded-xl bg-[#1d2127] border border-gray-700 text-gray-300 
+                     hover:bg-gray-700 transition text-sm truncate"
+        >
+          <ListPlus size={16} />
+          <span className="truncate">Subtask</span>
+        </button>
+      </div>
+
+      {/* SUBTASK INPUT FIELD */}
+      {showSubtaskInput && (
+        <div className="flex items-center gap-2 w-full">
+          <input
+            type="text"
+            value={subtaskText}
+            onChange={(e) => setSubtaskText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleAddSubtask()}
+            placeholder="Enter subtask…"
+            className="flex-1 px-3 py-2 rounded-lg bg-[#1d2127] 
+                       border border-gray-700 text-gray-300 
+                       focus:outline-none focus:ring-2 focus:ring-teal-600"
+          />
+          <button
+            onClick={handleAddSubtask}
+            disabled={!subtaskText.trim()}
+            className={`px-4 py-2 rounded-lg transition
+              ${subtaskText.trim()
+                ? "bg-teal-600 text-gray-900 hover:bg-teal-500"
+                : "bg-gray-600 text-gray-400 cursor-not-allowed"}`}
+          >
+            Add
+          </button>
+        </div>
+      )}
+       {/* ADD TASK BUTTON */}
+      <button
+        onClick={onAddTask}
+        disabled={!task.title.trim()}
+        className={`w-full py-3 rounded-xl font-semibold text-sm transition
+          ${task.title.trim()
+            ? "bg-teal-600 text-gray-900 hover:bg-teal-500"
+            : "bg-gray-600 text-gray-400 cursor-not-allowed"}`}
+      >
+        + Add Task
       </button>
     </section>
   );
