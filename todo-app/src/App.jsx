@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import TaskList from "./components/TaskList/TaskList";
 import NewTaskPanel from "./components/NewTaskPanel/NewTaskPanel";
@@ -8,9 +8,20 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    // Load tasks from localStorage on initial render
+    const saved = localStorage.getItem("tasks");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const sidebarRef = useRef(null);
   const newTaskRef = useRef(null);
+
+  // Save tasks to localStorage whenever tasks state changes
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   const addTask = (task) => {
     const formatted = {
       title: task.title,
@@ -99,17 +110,14 @@ export default function App() {
                 ? "bg-white text-black border-r border-gray-300 scrollbar-light"
                 : "bg-gray-800 text-gray-200 scrollbar"
             }
-            ${
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } lg:translate-x-0
-          `}
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
         >
           <Sidebar lightMode={lightMode} />
         </aside>
 
         {/* Task List */}
         <div className="flex-1 h-full overflow-y-auto">
-          <TaskList lightMode={lightMode} />
+          <TaskList lightMode={lightMode} tasks={tasks} setTasks={setTasks} />
         </div>
 
         {/* New Task Panel */}
@@ -121,10 +129,7 @@ export default function App() {
                 ? "bg-white text-black border-l border-gray-300 scrollbar-light"
                 : "bg-gray-800 text-gray-200 scrollbar"
             }
-            ${
-              newTaskOpen ? "translate-x-0" : "translate-x-full"
-            } lg:translate-x-0
-          `}
+            ${newTaskOpen ? "translate-x-0" : "translate-x-full"} lg:translate-x-0`}
         >
           <NewTaskPanel lightMode={lightMode} addTask={addTask} />
         </aside>
