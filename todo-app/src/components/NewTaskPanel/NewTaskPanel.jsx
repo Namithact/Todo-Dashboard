@@ -29,7 +29,7 @@ export default function NewTaskPanel({ lightMode, addTask }) {
       <TaskInput lightMode={lightMode} value={task.title} onChange={(value) => setTask(prev => ({ ...prev, title: value }))} />
 
       {/* Action Buttons */}
-      <ActionButtons task={task} setTask={setTask} onAddTask={handleAddTask} />
+      <ActionButtons lightMode={lightMode}  task={task} setTask={setTask} onAddTask={handleAddTask} />
 
       {/* Due Date */}
       <DueDate lightMode={lightMode} selectedDate={task.due} onSelect={(date) => setTask(prev => ({ ...prev, due: date }))} />

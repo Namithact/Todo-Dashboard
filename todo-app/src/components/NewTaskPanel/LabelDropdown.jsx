@@ -9,26 +9,32 @@ const LABELS = [
   { name: "Tags", icon: "🏷" },
 ];
 
-export default function LabelDropdown({ onSelect }) {
+export default function LabelDropdown({ onSelect, lightMode }) {
   const [open, setOpen] = useState(false);
 
   return (
-   <div className="relative w-full">
-  <button
-    onClick={() => setOpen(!open)}
-    className="w-full flex items-center justify-center gap-2 px-3 py-2 
-               rounded-xl bg-[#1d2127] border border-gray-700 
-               text-gray-300 hover:bg-gray-700 transition truncate"
-  >
-    <Tag size={16} />
-    <span className="truncate">Label</span>
-  </button>
+    <div className="relative w-full">
+      {/* Trigger Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl transition truncate
+          ${lightMode
+            ? "bg-gray-100 border border-gray-300 text-gray-800 hover:bg-gray-200"
+            : "bg-[#1d2127] border border-gray-700 text-gray-300 hover:bg-gray-700"
+          }`}
+      >
+        <Tag size={16} />
+        <span className="truncate">Label</span>
+      </button>
 
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute mt-2 w-40 bg-[#23272f] border border-gray-700 
-                     rounded-xl p-2 shadow-xl z-20"
+          className={`absolute mt-2 w-40 rounded-xl p-2 shadow-xl z-20 transition
+            ${lightMode
+              ? "bg-white border border-gray-300"
+              : "bg-[#23272f] border border-gray-700"
+            }`}
         >
           {LABELS.map((label) => (
             <button
@@ -37,18 +43,17 @@ export default function LabelDropdown({ onSelect }) {
                 onSelect(label);
                 setOpen(false);
               }}
-              className="w-full flex items-center gap-2 px-2 py-2 
-                         text-gray-300 rounded-lg hover:bg-gray-700 transition text-left"
+              className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-left transition
+                ${lightMode
+                  ? "text-gray-800 hover:bg-gray-200"
+                  : "text-gray-300 hover:bg-gray-700"
+                }`}
             >
-              {/* Dot or icon */}
               {label.icon ? (
                 <span>{label.icon}</span>
               ) : (
-                <span
-                  className={`w-3 h-3 rounded-full ${label.color}`}
-                ></span>
+                <span className={`w-3 h-3 rounded-full ${label.color}`}></span>
               )}
-
               <span>{label.name}</span>
             </button>
           ))}
