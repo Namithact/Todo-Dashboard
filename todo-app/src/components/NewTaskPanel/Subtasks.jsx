@@ -33,7 +33,7 @@ export default function Subtasks({ lightMode }) {
             type="checkbox"
             className="w-4 h-4 rounded border-gray-600 bg-[#1c1f24]"
           />
-          Add thrɘ subtask
+          Add the subtask
         </label>
 
          <label
