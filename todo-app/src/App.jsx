@@ -119,13 +119,15 @@ export default function App() {
                 ? "bg-white text-black border-r border-gray-300 scrollbar-light"
                 : "bg-gray-800 text-gray-200 scrollbar"
             }
-            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+            ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } lg:translate-x-0`}
         >
           <Sidebar lightMode={lightMode} />
         </aside>
 
         {/* Task List */}
-        <div className="flex-1 h-full overflow-y-auto">
+        <div className="flex-1 flex flex-col h-full">
           <TaskList lightMode={lightMode} tasks={tasks} setTasks={setTasks} />
         </div>
 
@@ -138,7 +140,9 @@ export default function App() {
                 ? "bg-white text-black border-l border-gray-300 scrollbar-light"
                 : "bg-gray-800 text-gray-200 scrollbar"
             }
-            ${newTaskOpen ? "translate-x-0" : "translate-x-full"} lg:translate-x-0`}
+            ${
+              newTaskOpen ? "translate-x-0" : "translate-x-full"
+            } lg:translate-x-0`}
         >
           <NewTaskPanel lightMode={lightMode} addTask={addTask} />
         </aside>

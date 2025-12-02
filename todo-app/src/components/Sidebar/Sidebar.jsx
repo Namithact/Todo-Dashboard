@@ -1,6 +1,7 @@
 import { User, Briefcase, ShoppingBag } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 import LabelItem from "./LabelItem";
+import { Tag } from "lucide-react";
 export default function Sidebar({ lightMode }) {
   const projects = [
     { label: "Work", Icon: Briefcase },
@@ -51,50 +52,50 @@ export default function Sidebar({ lightMode }) {
       </nav>
 
       {/* Labels Section */}
-      <section aria-labelledby="labels-heading">
-        <div className="flex items-center justify-between mb-3">
-          <p
-            id="labels-heading"
-            className={`text-sm uppercase tracking-wide ${
-              lightMode ? "text-black" : "text-gray-400"
-            }`}
-          >
-            Labels
-          </p>
-          <button
-            className="text-gray-400 hover:text-gray-200"
-            aria-label="Add Label"
-          >
-            +
-          </button>
-        </div>
+    {/* Labels Section */}
+<section aria-labelledby="labels-heading">
+  <div className="flex items-center justify-between mb-3">
+    {/* Icon + Heading */}
+    <div className="flex items-center gap-2">
+      <Tag size={16} />
+      <p
+        id="labels-heading"
+        className={`text-sm uppercase tracking-wide ${
+          lightMode ? "text-black" : "text-gray-400"
+        }`}
+      >
+        Labels
+      </p>
+    </div>
 
-        <ul className="flex flex-col gap-2">
-          <li>
-            <LabelItem lightMode={lightMode} label="Work" color="bg-teal-400" />
-          </li>
-          <li>
-            <LabelItem
-              lightMode={lightMode}
-              label="Personal"
-              color="bg-blue-400"
-            />
-          </li>
-          <li>
-            <LabelItem
-              lightMode={lightMode}
-              label="Shopping"
-              color="bg-orange-400"
-            />
-          </li>
-          <li>
-            <LabelItem lightMode={lightMode} label="Grant" color="bg-red-400" />
-          </li>
-          <li>
-            <LabelItem lightMode={lightMode} label="Tags" icon="🏷" />
-          </li>
-        </ul>
-      </section>
+    {/* Add Label Button */}
+    <button
+      className="text-gray-400 hover:text-gray-200"
+      aria-label="Add Label"
+    >
+      +
+    </button>
+  </div>
+
+  <ul className="flex flex-col gap-2">
+    <li>
+      <LabelItem lightMode={lightMode} label="Work" color="bg-teal-400" />
+    </li>
+    <li>
+      <LabelItem lightMode={lightMode} label="Personal" color="bg-blue-400" />
+    </li>
+    <li>
+      <LabelItem lightMode={lightMode} label="Shopping" color="bg-orange-400" />
+    </li>
+    <li>
+      <LabelItem lightMode={lightMode} label="Grant" color="bg-red-400" />
+    </li>
+    <li>
+      <LabelItem lightMode={lightMode} label="Tags" icon="🏷" />
+    </li>
+  </ul>
+</section>
+
     </aside>
   );
 }
