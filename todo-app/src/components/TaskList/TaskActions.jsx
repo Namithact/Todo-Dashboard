@@ -66,7 +66,7 @@ export default function TaskActions({ task, onEdit, onDelete, lightMode }) {
 
       {task.labelColor && (
         <span
-          className={`w-4 h-4 rounded-full ${task.labelColor} border ${badgeBorder} ${badgeBg}`}
+          className={`w-4 h-4 rounded-full ${task.labelColor} border ${badgeBorder} `}
         ></span>
       )}
 

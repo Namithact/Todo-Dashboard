@@ -1,14 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Flag, Flame, Activity, ArrowDown } from "lucide-react";
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
-export default function PriorityDropdown({ onSelect, lightMode }) {
+const PriorityDropdown = forwardRef(({ onSelect, lightMode }, ref) => {
   const [open, setOpen] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState(null);
   const dropdownRef = useRef(null);
 
-  // Map priority to icon + color
   const priorityIcons = {
     High: <Flame size={14} className="text-red-500" />,
     Medium: <Activity size={14} className="text-yellow-500" />,
@@ -28,16 +27,17 @@ export default function PriorityDropdown({ onSelect, lightMode }) {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Expose reset function to parent
+  useImperativeHandle(ref, () => ({
+    reset: () => setSelectedPriority(null),
+  }));
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
-      {/* Trigger Button */}
       <button
         onClick={() => setOpen(!open)}
         className={`w-full flex items-center justify-center px-3 py-2 rounded-xl transition
@@ -46,11 +46,9 @@ export default function PriorityDropdown({ onSelect, lightMode }) {
             : "bg-[#1d2127] border border-gray-700 text-gray-300 hover:bg-gray-700"
           }`}
       >
-        {/* Show selected icon, otherwise show default flag */}
         {selectedPriority ? priorityIcons[selectedPriority] : <Flag size={16} />}
       </button>
 
-      {/* Dropdown */}
       {open && (
         <div
           className={`absolute mt-2 w-40 rounded-xl p-2 shadow-xl z-20 transition
@@ -74,4 +72,6 @@ export default function PriorityDropdown({ onSelect, lightMode }) {
       )}
     </div>
   );
-}
+});
+
+export default PriorityDropdown;

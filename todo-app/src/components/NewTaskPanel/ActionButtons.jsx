@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ListPlus } from "lucide-react";
 import LabelDropdown from "./LabelDropdown";
 import PriorityDropdown from "./PriorityDropdown";
@@ -6,6 +6,9 @@ import PriorityDropdown from "./PriorityDropdown";
 export default function ActionButtons({ task, setTask, onAddTask, lightMode }) {
   const [showSubtaskInput, setShowSubtaskInput] = useState(false);
   const [subtaskText, setSubtaskText] = useState("");
+
+  const labelDropdownRef = useRef(null);
+  const priorityDropdownRef = useRef(null);
 
   const handleAddSubtask = () => {
     if (!subtaskText.trim()) return;
@@ -19,13 +22,25 @@ export default function ActionButtons({ task, setTask, onAddTask, lightMode }) {
     setShowSubtaskInput(false);
   };
 
+  const handleAddTask = () => {
+    onAddTask();
+
+    // Reset subtask input
+    setSubtaskText("");
+    setShowSubtaskInput(false);
+
+    // Reset label and priority selections
+    setTask((prev) => ({ ...prev, labelColor: "", priority: "" }));
+    labelDropdownRef.current?.reset();
+    priorityDropdownRef.current?.reset();
+  };
+
   return (
     <section className="w-full flex flex-col gap-4">
-
-      {/* LABEL - PRIORITY - SUBTASK ROW */}
       <div className="flex gap-2">
         <div className="flex-1 min-w-0">
           <LabelDropdown
+            ref={labelDropdownRef}
             lightMode={lightMode}
             onSelect={(label) =>
               setTask((prev) => ({ ...prev, labelColor: label.color }))
@@ -35,6 +50,7 @@ export default function ActionButtons({ task, setTask, onAddTask, lightMode }) {
 
         <div className="flex-1 min-w-0">
           <PriorityDropdown
+            ref={priorityDropdownRef}
             lightMode={lightMode}
             onSelect={(priority) => setTask((prev) => ({ ...prev, priority }))}
           />
@@ -53,8 +69,7 @@ export default function ActionButtons({ task, setTask, onAddTask, lightMode }) {
           <span className="truncate">Subtask</span>
         </button>
       </div>
-
-      {/* SUBTASK INPUT FIELD */}
+ {/* SUBTASK INPUT FIELD */}
       {showSubtaskInput && (
         <div className="flex items-center gap-2 w-full">
           <input
@@ -86,10 +101,9 @@ export default function ActionButtons({ task, setTask, onAddTask, lightMode }) {
           </button>
         </div>
       )}
-
-      {/* ADD TASK BUTTON */}
+     {/* ADD TASK BUTTON */}
       <button
-        onClick={onAddTask}
+        onClick={handleAddTask}
         disabled={!task.title.trim()}
         className={`w-full py-3 rounded-xl font-semibold text-sm transition
           ${task.title.trim()
