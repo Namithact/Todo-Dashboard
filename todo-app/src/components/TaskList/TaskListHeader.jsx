@@ -12,8 +12,8 @@ export default function TaskListHeader({ searchItem, lightMode }) {
   return (
     <header className="mb-6 flex items-center justify-between">
       <div className={`flex items-center gap-2 text-xl font-semibold cursor-pointer ${titleColor}`}>
-        <span>Today</span>
-        <svg
+        <span>Tasks</span>
+        {/* <svg
           className={`w-4 h-4 ${iconColor}`}
           fill="none"
           stroke="currentColor"
@@ -21,7 +21,7 @@ export default function TaskListHeader({ searchItem, lightMode }) {
           viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
+        </svg> */}
       </div>
 
       <div className="flex items-center gap-2">

@@ -2,55 +2,55 @@ import TaskListHeader from "./TaskListHeader";
 import TaskItem from "./TaskItem";
 import { useState } from "react";
 
-export default function TaskList({ lightMode }) {
-  const [tasks, setTasks] = useState([
-    {
-      title: "Finish project report",
-      labelColor: "bg-teal-400",
-      due: "2025-11-30", // Today
-      completed: true,
-      priority: "High",
-    },
-    {
-      title: "tt",
-      labelColor: "bg-blue-400",
-      due: "2025-12-11",
-      completed: false,
-      priority: "Medium",
-      subtasks: [
-        {
-          title: "test",
-          completed: false,
-        },
-      ],
-    },
-    {
-      title: "Finish project report",
-      labelColor: "bg-teal-400",
-      due: "2025-11-30", // Today
-      completed: false,
-      priority: "High",
-      subtasks: [
-        { title: "Draft outline", completed: false },
-        { title: "Write intro", completed: true },
-        { title: "Review and edit", completed: false },
-      ],
-    },
-    {
-      title: "Buy groceries",
-      labelColor: "bg-orange-400",
-      due: "2025-11-27", // Tomorrow
-      completed: false,
-      priority: "Low",
-    },
-    {
-      title: "Call mom",
-      labelColor: "bg-blue-400",
-      due: "2025-11-29", // Today
-      completed: false,
-      priority: "Medium",
-    },
-  ]);
+export default function TaskList({ lightMode,tasks,setTasks }) {
+  // const [tasks, setTasks] = useState([
+  //   {
+  //     title: "Finish project report",
+  //     labelColor: "bg-teal-400",
+  //     due: "2025-11-30", // Today
+  //     completed: true,
+  //     priority: "High",
+  //   },
+  //   {
+  //     title: "tt",
+  //     labelColor: "bg-blue-400",
+  //     due: "2025-12-11",
+  //     completed: false,
+  //     priority: "Medium",
+  //     subtasks: [
+  //       {
+  //         title: "test",
+  //         completed: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Finish project report",
+  //     labelColor: "bg-teal-400",
+  //     due: "2025-11-30", // Today
+  //     completed: false,
+  //     priority: "High",
+  //     subtasks: [
+  //       { title: "Draft outline", completed: false },
+  //       { title: "Write intro", completed: true },
+  //       { title: "Review and edit", completed: false },
+  //     ],
+  //   },
+  //   {
+  //     title: "Buy groceries",
+  //     labelColor: "bg-orange-400",
+  //     due: "2025-11-27", // Tomorrow
+  //     completed: false,
+  //     priority: "Low",
+  //   },
+  //   {
+  //     title: "Call mom",
+  //     labelColor: "bg-blue-400",
+  //     due: "2025-11-29", // Today
+  //     completed: false,
+  //     priority: "Medium",
+  //   },
+  // ]);
 
   const [searchTerm, setSearchTerm] = useState("");
 

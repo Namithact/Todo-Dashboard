@@ -10,7 +10,7 @@ export default function App() {
 
   // Initialize lightMode from sessionStorage
   const [lightMode, setLightMode] = useState(() => {
-    const saved = sessionStorage.getItem("lightMode");
+    const saved = localStorage.getItem("lightMode");
     return saved === "true"; // stored as string, convert to boolean
   });
 
@@ -29,7 +29,7 @@ export default function App() {
 
   // Save lightMode to sessionStorage whenever it changes
   useEffect(() => {
-    sessionStorage.setItem("lightMode", lightMode);
+    localStorage.setItem("lightMode", lightMode);
   }, [lightMode]);
 
   const addTask = (task) => {

@@ -17,6 +17,9 @@ export default function TaskActions({ task, onEdit, onDelete, lightMode }) {
   const daysOverdue = isOverdue
     ? Math.ceil((today - dueDate) / (1000 * 60 * 60 * 24))
     : 0;
+  const daysLeft = !isOverdue
+    ? Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24))
+    : 0;
 
   // Close menu on outside click
   useEffect(() => {
@@ -49,6 +52,12 @@ export default function TaskActions({ task, onEdit, onDelete, lightMode }) {
         {isOverdue && (
           <span className={`${overdueColor} text-xs`}>
             {daysOverdue} day{daysOverdue > 1 ? "s" : ""} overdue
+          </span>
+        )}
+        {/* Days Left (only if not overdue and not completed) */}
+        {!isOverdue && !task.completed && daysLeft > 0 && (
+          <span className="text-xs text-green-600">
+            {daysLeft} day{daysLeft > 1 ? "s" : ""} left
           </span>
         )}
       </div>
