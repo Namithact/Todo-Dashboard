@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Tag } from "lucide-react";
 
 const LABELS = [
@@ -12,6 +12,7 @@ const LABELS = [
 export default function LabelDropdown({ onSelect, lightMode }) {
   const [open, setOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState(null);
+  const dropdownRef = useRef(null);
 
   const handleSelect = (label) => {
     setSelectedLabel(label); // store selected label
@@ -19,9 +20,22 @@ export default function LabelDropdown({ onSelect, lightMode }) {
     setOpen(false);
   };
 
-  return (
-    <div className="relative w-full">
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         onClick={() => setOpen(!open)}
@@ -36,9 +50,7 @@ export default function LabelDropdown({ onSelect, lightMode }) {
           selectedLabel.icon ? (
             <span>{selectedLabel.icon}</span>
           ) : (
-            <span
-              className={`w-4 h-4 rounded-full ${selectedLabel.color}`}
-            />
+            <span className={`w-4 h-4 rounded-full ${selectedLabel.color}`} />
           )
         ) : (
           <Tag size={16} />
@@ -59,8 +71,7 @@ export default function LabelDropdown({ onSelect, lightMode }) {
               key={label.name}
               onClick={() => handleSelect(label)}
               className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-left transition
-                ${lightMode ? "text-gray-800 hover:bg-gray-200" : "text-gray-300 hover:bg-gray-700"}
-              `}
+                ${lightMode ? "text-gray-800 hover:bg-gray-200" : "text-gray-300 hover:bg-gray-700"}`}
             >
               {label.icon ? (
                 <span>{label.icon}</span>

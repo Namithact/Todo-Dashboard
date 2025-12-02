@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Flag, Flame, Activity, ArrowDown } from "lucide-react";
 
 const PRIORITIES = ["High", "Medium", "Low"];
@@ -6,6 +6,7 @@ const PRIORITIES = ["High", "Medium", "Low"];
 export default function PriorityDropdown({ onSelect, lightMode }) {
   const [open, setOpen] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState(null);
+  const dropdownRef = useRef(null);
 
   // Map priority to icon + color
   const priorityIcons = {
@@ -20,8 +21,22 @@ export default function PriorityDropdown({ onSelect, lightMode }) {
     setOpen(false);
   };
 
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         onClick={() => setOpen(!open)}
