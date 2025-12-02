@@ -43,10 +43,12 @@ export default function TaskActions({ task, onEdit, onDelete, lightMode }) {
     <div className="flex items-center gap-3">
       <div className={`flex flex-col text-sm leading-tight ${textColor}`}>
         {/* Due Date */}
-        <div className="flex items-center gap-1">
-          <Calendar size={14} />
-          <span>{task.due}</span>
-        </div>
+        {task.due && (
+          <div className="flex items-center gap-1">
+            <Calendar size={14} />
+            <span>{task.due}</span>
+          </div>
+        )}
 
         {/* Overdue text */}
         {isOverdue && (
@@ -62,9 +64,11 @@ export default function TaskActions({ task, onEdit, onDelete, lightMode }) {
         )}
       </div>
 
-      <span
-        className={`w-4 h-4 rounded-full ${task.labelColor} border ${badgeBorder} ${badgeBg}`}
-      ></span>
+      {task.labelColor && (
+        <span
+          className={`w-4 h-4 rounded-full ${task.labelColor} border ${badgeBorder} ${badgeBg}`}
+        ></span>
+      )}
 
       {/* More Options */}
       <div className="relative" ref={menuRef}>
