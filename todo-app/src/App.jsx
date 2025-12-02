@@ -127,7 +127,13 @@ export default function App() {
         </aside>
 
         {/* Task List */}
-        <div className="flex-1 flex flex-col h-full">
+        <div
+          className={`flex-1 flex flex-col h-full  ${
+            lightMode
+              ? "bg-white text-black border-l border-gray-300 scrollbar-light"
+              : "bg-gray-800 text-gray-200 scrollbar"
+          }`}
+        >
           <TaskList lightMode={lightMode} tasks={tasks} setTasks={setTasks} />
         </div>
 
