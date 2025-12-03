@@ -3,9 +3,9 @@
 GitHub Repository: https://github.com/Namithact/Todo-Dashboard  
 Deployed URL: https://todo-dashboard-sigma.vercel.app/
 
-------------------------------------------------------------
-HOW TO RUN THIS PROJECT LOCALLY
-------------------------------------------------------------
+---
+
+## HOW TO RUN THIS PROJECT LOCALLY
 
 1. Clone the repository:
    git clone https://github.com/Namithact/Todo-Dashboard.git
@@ -22,52 +22,62 @@ HOW TO RUN THIS PROJECT LOCALLY
 The project will run at:
 http://localhost:5173/
 
-FEATURES IMPLEMENTED
---------------------
+## FEATURES IMPLEMENTED
 
 1. Responsive 3-panel layout
+
    - Desktop view: Sidebar, Task List, and New Task Panel.
    - Mobile view: Only the Task List is visible initially, with buttons to open the Sidebar and New Task Panel.
 
 2. Task management
-   - Users can add tasks with label, priority, due date, and  subtasks.
+
+   - Users can add tasks with label, priority, due date, and subtasks.
    - All added tasks are displayed in the Task List.
 
 3. Due date calculations
+
    - Automatically calculates and displays overdue days or number of days remaining.
 
 4. Subtask logic
+
    - Completing all subtasks automatically marks the main task as completed.
 
 5. Complete All option
+
    - The “Complete All” checkbox marks all tasks and all subtasks as completed.
 
 6. Edit and delete functionality for main tasks
+
    - Users can edit only the task title.
    - Users can delete a task by clicking the three-dots menu on the right side of each task item.
 
 7. Dark/Light mode
+
    - A toggle allows switching between dark and light themes.
 
 8. Local storage persistence
+
    - Tasks and theme preference (dark/light mode) are stored in localStorage.
 
 9. Task highlighting
+
    - Overdue tasks and completed tasks are visually highlighted.
 
 10. New Task Panel functionality
-   - The “Add Task” button is enabled only after entering a task name.
-   - Users can set priority, label, due date, and subtasks.
-   - The subtask gets added only when the "Add" button of subtask is clicked.
-   - Subtask checkboxes and a notes section are included based on the design.
+
+- The “Add Task” button is enabled only after entering a task name.
+- Users can set priority, label, due date, and subtasks.
+- The subtask gets added only when the "Add" button of subtask is clicked.
+- Subtask checkboxes and a notes section are included based on the design.
+
 11. Fallback Screens
-   - When no tasks are added, a clean empty-state screen is displayed.
-   - When search results return no matches, a "No tasks found" screen is shown.
 
-------------------------------------------------------------
+- When no tasks are added, a clean empty-state screen is displayed.
+- When search results return no matches, a "No tasks found" screen is shown.
 
-LIMITATIONS
------------
+---
+
+## LIMITATIONS
 
 1. The sidebar does not have any functionality because nothing was specified in the document. It is included only to match the design visually.
 
@@ -81,3 +91,9 @@ LIMITATIONS
    - Some panels or elements may appear slightly misaligned on physical mobile devices compared to browser dev tools.
    - This is due to differences in pixel density, scrollbars, and browser rendering on real devices.
    - The overall functionality and layout remain correct.
+
+6. Subtask Management – Important Note
+    While reviewing the project for final submission, I identified that subtasks currently support only completion toggling.
+    Features such as deleting or editing individual subtasks are not yet implemented.
+
+    I intentionally chose not to introduce these changes at the last moment, as modifying the subtask logic just before submission could risk breaking existing functionality and affect the project's stability.
