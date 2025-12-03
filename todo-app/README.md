@@ -42,7 +42,7 @@ FEATURES IMPLEMENTED
 5. Complete All option
    - The “Complete All” checkbox marks all tasks and all subtasks as completed.
 
-6. Edit and delete functionality
+6. Edit and delete functionality for main tasks
    - Users can edit only the task title.
    - Users can delete a task by clicking the three-dots menu on the right side of each task item.
 
@@ -58,6 +58,7 @@ FEATURES IMPLEMENTED
 10. New Task Panel functionality
    - The “Add Task” button is enabled only after entering a task name.
    - Users can set priority, label, due date, and subtasks.
+   - The subtask gets added only when the "Add" button of subtask is clicked.
    - Subtask checkboxes and a notes section are included based on the design.
 11. Fallback Screens
    - When no tasks are added, a clean empty-state screen is displayed.
