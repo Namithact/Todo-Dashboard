@@ -12,7 +12,7 @@ export default function TaskItem({
   onDelete,
   toggleSubtask,
   isOverdue,
-  lightMode, // ✅ added prop
+  lightMode, 
 }) {
   const [showSubtasks, setShowSubtasks] = useState(false);
 
