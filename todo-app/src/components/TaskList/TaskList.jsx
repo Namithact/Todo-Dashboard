@@ -94,7 +94,8 @@ export default function TaskList({ lightMode, tasks, setTasks }) {
       <TaskListHeader searchItem={searchTask} lightMode={lightMode} />
 
       {/* Complete All Checkbox */}
-      {tasks.length > 0 && (
+      {/* Complete All Checkbox */}
+      {tasks.length > 0 && filteredWithIndex.length > 0 && (
         <div className="flex items-center gap-2 mb-4 mt-2">
           <input
             type="checkbox"
@@ -127,7 +128,19 @@ export default function TaskList({ lightMode, tasks, setTasks }) {
             />
           ))}
         </ul>
+      ) : searchTerm.trim() !== "" ? (
+        // 🔍 No search results fallback
+        <div
+          className={`flex flex-col items-center justify-center py-20 text-center gap-2 ${
+            lightMode ? "text-gray-500" : "text-gray-400"
+          }`}
+        >
+          <span className="text-4xl">🔍</span>
+          <p className="text-lg font-semibold">No matching tasks</p>
+          <p className="text-sm">Try a different keyword.</p>
+        </div>
       ) : (
+        // 📄 No tasks fallback
         <div
           className={`flex flex-col items-center justify-center py-20 text-center gap-2 ${
             lightMode ? "text-gray-500" : "text-gray-400"
